@@ -1,0 +1,4 @@
+#!/bin/sh
+/etc/init.d/mqtt_service enable
+rm -f /etc/uci-defaults/99-enable-mqtt
+exit 0
