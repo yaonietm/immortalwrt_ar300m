@@ -1,58 +1,50 @@
-name: Build GL‑AR300M‑NAND ImmortalWrt‑25.12 Official
+name: Build GL-AR300M-NAND ImmortalWrt-25.12 Official
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    runs‑on: ubuntu‑22.04
+    runs-on: ubuntu-22.04
     steps:
-      # ① 拉取你仓库的配置（.config + files 放在 configs 文件夹）
-      - name: Checkout custom configs
+      - name: Checkout my configs
         uses: actions/checkout@v4
         path: my_cfg
 
-      # ② 固定拉取 ImmortalWrt 官方 openwrt‑25.12 分支源码
-      - name: Checkout official ImmortalWrt openwrt‑25.12
+      - name: Checkout official ImmortalWrt openwrt-25.12
         uses: actions/checkout@v4
         with:
           repository: immortalwrt/immortalwrt
-          ref: openwrt‑25.12
-          path: src‑immortalwrt
+          ref: openwrt-25.12
+          path: src-immortalwrt
 
-      # ③ 安装编译依赖包
-      - name: Install build dependencies
+      - name: Install dependencies
         run: |
-          sudo apt‑get update
-          sudo apt‑get install ‑y build‑essential libncurses‑dev gawk flex bison openssl libssl‑dev dkms libelf‑dev libudev‑dev libpci‑dev libiberty‑dev autoconf automake zlib1g‑dev gcc‑multilib
+          sudo apt-get update
+          sudo apt-get install -y build-essential libncurses-dev gawk flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf automake zlib1g-dev gcc-multilib
 
-      # ④ 将你的配置复制进官方源码目录
-      - name: Apply custom .config & files overlay
+      - name: Apply config and files overlay
         run: |
-          cp my_cfg/configs/.config src‑immortalwrt/.config
-          cp ‑r my_cfg/configs/files src‑immortalwrt/files
+          cp my_cfg/configs/.config src-immortalwrt/.config
+          cp -r my_cfg/configs/files src-immortalwrt/files
 
-      # ⑤ feeds 更新、安装插件包定义
       - name: Feeds update & install
         run: |
-          cd src‑immortalwrt
-          ./scripts/feeds update ‑a
-          ./scripts/feeds install ‑a
+          cd src-immortalwrt
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
 
-      # ⑥ 预下载源码包，减少编译阶段网络等待
-      - name: Make download prefetch sources
+      - name: Download source
         run: |
-          cd src‑immortalwrt
-          make download ‑j$(nproc)
+          cd src-immortalwrt
+          make download -j$(nproc)
 
-      # ⑦ 编译固件
-      - name: Compile firmware
+      - name: Compile
         run: |
-          cd src‑immortalwrt
-          make ‑j$(nproc)
+          cd src-immortalwrt
+          make -j$(nproc)
 
-      # ⑧ 上传固件产物，只输出 ath79/nand 的 bin 文件
-      - name: Upload firmware artifact
-        uses: actions/upload‑artifact@v4
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
         with:
-          name: GL‑AR300M‑NAND‑ImmortalWrt‑25.12
-          path: src‑immortalwrt/bin/targets/ath79/nand/*.bin
+          name: GL-AR300M-NAND-ImmortalWrt-25.12
+          path: src-immortalwrt/bin/targets/ath79/nand/*.bin
