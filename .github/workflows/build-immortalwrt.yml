@@ -32,7 +32,7 @@ jobs:
 
       - name: 导入你的配置
         run: |
-          cp configs/.config .config
+          cp configs/closepasswall.config .config
           make defconfig
 
       - name: 编译固件
