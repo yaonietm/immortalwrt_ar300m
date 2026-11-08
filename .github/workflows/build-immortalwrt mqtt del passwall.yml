@@ -32,7 +32,7 @@ jobs:
 
       - name: 导入你的配置
         run: |
-          cp configs/closepasswall.config .config
+          cp configs/delpasswall_addpython.config .config
           make defconfig
 
       - name: 编译固件
