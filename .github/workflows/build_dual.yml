@@ -1,0 +1,66 @@
+name: Build ImmortalWrt 26.3 wireguard zerotier frpc
+on:
+  workflow_dispatch:
+# ===================== 第1套：delpasswall_addpython 原地增量 =====================
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 扩容磁盘
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 512
+          swap-size-mb: 2048
+
+      - name: 拉取源码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 安装编译依赖
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential libncurses-dev gawk flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf wget curl git python3 python3-pip unzip
+
+      - name: 更新 feeds
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: 复制自定义files目录
+        run: |
+          cp -r configs/files ./files
+
+      # ===================== 第1套：delpasswall_addpython 原地增量 =====================
+      - name: 导入配置 add_wireguard_zerotier_frpc
+        run: |
+          cp configs/delpasswall_addpython.config .config
+
+      - name: 编译固件 add_wireguard_zerotier_frpc
+        run: |
+          make -j$(nproc)
+
+      - name: 上传固件 add_wireguard_zerotier_frpc
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-delpasswall_addpython
+          path: bin/targets/
+
+      # ===================== 第2套：add_wireguard_zerotier_frpc =====================
+      - name: 切换配置 delpasswall_addpython（增量）
+        run: |
+          # 保留 build_dir/staging_dir，只替换配置
+          cp configs/add_wireguard_zerotier_frpc.config .config
+          make defconfig
+          # make clean 只清ipk和镜像，不删除编译好的obj，维持增量
+          make clean
+
+      - name: 编译固件 delpasswall_addpython
+        run: |
+          make -j$(nproc)
+
+      - name: 上传固件 delpasswall_addpython
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-add_wireguard_zerotier_frpc
+          path: bin/targets/
