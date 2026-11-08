@@ -1,4 +1,4 @@
-name: Build ImmortalWrt 26.3 wireguard zerotier frpc
+name: Build dual
 on:
   workflow_dispatch:
 # 编译两个版本，速度加快；一个只有python版本，一个增加两个vpn
