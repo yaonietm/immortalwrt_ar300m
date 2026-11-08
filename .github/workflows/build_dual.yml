@@ -1,7 +1,7 @@
 name: Build ImmortalWrt 26.3 wireguard zerotier frpc
 on:
   workflow_dispatch:
-# ===================== 第1套：delpasswall_addpython 原地增量 =====================
+# 编译两个版本，速度加快；一个只有python版本，一个增加两个vpn
 jobs:
   build:
     runs-on: ubuntu-latest
