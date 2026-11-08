@@ -35,9 +35,10 @@ jobs:
       - name: 导入配置 delpasswall_addpython
         run: |
           cp configs/delpasswall_addpython.config .config
-      - name: 编译特定错误包
+      - name: 预下载，防止错误
         run: |
-          make package/libs/ustream-ssl/compile V=s
+          make download -j$(nproc)
+          make package/utils/libdeflate/host/compile
           
       - name: 编译固件 delpasswall_addpython
         run: |
