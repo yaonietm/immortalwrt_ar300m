@@ -1,4 +1,4 @@
-name: Build dual
+name: Build dual version
 on:
   workflow_dispatch:
 # 编译两个版本，速度加快；一个只有python版本，一个增加两个vpn
