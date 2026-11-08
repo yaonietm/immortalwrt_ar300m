@@ -38,7 +38,6 @@ jobs:
       - name: 预下载，防止错误
         run: |
           make download -j$(nproc)
-          make package/utils/libdeflate/host/compile
           
       - name: 编译固件 delpasswall_addpython
         run: |
