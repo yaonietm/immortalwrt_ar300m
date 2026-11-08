@@ -1,4 +1,4 @@
-name: Build ImmortalWrt 26.3 ar300m-nand
+name: Build ImmortalWrt 26.3 ar300m-nand with mqtt del passwall
 on:
   workflow_dispatch:
 
