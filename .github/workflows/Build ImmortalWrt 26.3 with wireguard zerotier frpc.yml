@@ -32,7 +32,7 @@ jobs:
 
       - name: 导入你的配置
         run: |
-          cp configs/add wireguard zerotier frp.config .config
+          cp configs/add_wireguard_zerotier_frpc.config .config
           make defconfig
 
       - name: 编译固件
