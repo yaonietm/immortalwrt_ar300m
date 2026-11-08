@@ -38,6 +38,8 @@ jobs:
 
       - name: 编译固件 delpasswall_addpython
         run: |
+          make package/libs/ustream-ssl/clean
+          make package/libs/ustream-ssl/compile V=s
           make -j$(nproc)
 
       - name: 上传固件 delpasswall_addpython
