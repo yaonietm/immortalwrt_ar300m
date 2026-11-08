@@ -3,3 +3,8 @@ CONFIG_PACKAGE_wireguard-tools=y
 CONFIG_PACKAGE_luci-proto-wireguard=y
 CONFIG_PACKAGE_zerotier=y
 CONFIG_PACKAGE_luci-app-zerotier=y
+
+
+
+luci-app-frpc luci-app-easytier luci-app-wireguard luci-app-zerotier luci-app-wechatpush libpython3-3.13 python3-base python3-paho-mqtt python3-idna
+argon
