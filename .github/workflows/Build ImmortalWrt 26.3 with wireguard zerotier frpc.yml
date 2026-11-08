@@ -1,4 +1,4 @@
-name:  Build ImmortalWrt 26.3 wireguard zerotier
+name:  Build ImmortalWrt 26.3 wireguard zerotier frpc
 on:
   workflow_dispatch:
 
