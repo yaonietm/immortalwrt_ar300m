@@ -41,7 +41,7 @@ jobs:
           
       - name: 编译固件 delpasswall_addpython
         run: |
-          make -j$(nproc)
+          make -j$(nproc) V=s
 
       - name: 上传固件 delpasswall_addpython
         uses: actions/upload-artifact@v4
