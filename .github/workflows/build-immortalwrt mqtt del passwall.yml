@@ -16,6 +16,22 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
+      - name: 缓存 host工具链 & dl源码包
+        uses: actions/cache@v4
+        with:
+          path: |
+            dl
+            build_dir/host
+            staging_dir/host
+            staging_dir/hostpkg
+          key: ${{ runner.os }}-immortalwrt-ar300m-host-${{ hashFiles('feeds.conf.default') }}
+          restore-keys: |
+            ${{ runner.os }}-immortalwrt-ar300m-host-
+
+      - name: 刷新缓存内stamp时间戳
+        run: |
+          find staging_dir/host build_dir/host -name ".built" -o -name "*.stamp" -exec touch {} +
 
       - name: 安装编译依赖
         run: |
@@ -32,7 +48,7 @@ jobs:
 
       - name: 导入你的配置
         run: |
-          cp configs/delpasswall_addpython.config .config
+          cp configs/closepasswall.config .config
           make defconfig
 
       - name: 编译固件
